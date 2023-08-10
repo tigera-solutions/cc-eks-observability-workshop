@@ -46,6 +46,9 @@
     ```
 
     In a browser, the following should be seen:
+    ![stars_gui](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/7774d604-361c-4fe9-928f-18b45a4bb948)
+
+    
 
    b. Validate and access the  ```customer``` svc of the Yaobank application via its ```Loadbalancer``` service in a browser
 
@@ -61,6 +64,9 @@
     ```
 
     In a browser, the following should be seen:
+
+    ![yaobank_ui](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/1b4db718-ebf9-43d6-a0a7-92311a539472)
+
 
 
 [:arrow_right: Module 5 - Secure pod traffic using Calico Policy Recommender](module-5-secure-pod-traffic.md)   <br>
