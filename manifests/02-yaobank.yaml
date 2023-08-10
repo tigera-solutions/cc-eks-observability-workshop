@@ -110,10 +110,9 @@ metadata:
   labels:
     app: customer
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - port: 80
-    nodePort: 30180
     name: http
   selector:
     app: customer 
