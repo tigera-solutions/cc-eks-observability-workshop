@@ -12,7 +12,7 @@ In our scenario we will consider the Star application to be used by one tenant w
 
 The ```security``` tier will be used to implement high-level guardrails for the cluster.
 
-- A ```threatfeed``` security policy will be enforced for all cluster workloads. The policy will deny egress connectivity to malicious IPs in the ```threatfeed```.
+- A ```block-alienvault-ipthreatfeed``` security policy will be enforced for all cluster workloads. The policy will deny egress connectivity to malicious IPs in the ```threatfeed```.
 - The ```cluster-dns-allow-all``` security policy will have rules to permit ingress DNS traffic to the ```kube-dns``` endpoints on TCP and UDP port 53 from all endpoints in the cluster. The security policy will also have egress rules to permit all endpoints in the cluster to send DNS traffic to the ```kube-dns``` endpoints on the same ports.
 - Finally, ```security-default-pass``` policy will be used to pass any traffic that is not explicitly allowed or denied in this tier to the subsequent tier for policy processing.
 
