@@ -1,0 +1,21 @@
+apiVersion: crd.projectcalico.org/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    projectcalico.org/tier: app
+  name: app.currencyservice
+  namespace: hipstershop
+spec:
+  ingress:
+  - action: Allow
+    destination:
+      ports:
+      - 7000
+    protocol: TCP
+    source:
+      selector: app == "checkoutservice" || app == "frontend"
+  order: 1650
+  selector: app == "currencyservice"
+  tier: app
+  types:
+  - Ingress

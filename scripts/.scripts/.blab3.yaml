@@ -1,0 +1,69 @@
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: app.frontend
+  namespace: hipstershop
+spec:
+  tier: app
+  order: 1100
+  selector: app == "frontend"
+  ingress:
+    - action: Log
+      protocol: TCP
+      source: {}
+      destination:
+        ports:
+          - "8080"
+  egress:
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "cartservice"
+        ports:
+          - "7070"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "productcatalogservice"
+        ports:
+          - "3550"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "recommendationservice"
+        ports:
+          - "8080"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "currencyservice"
+        ports:
+          - "7000"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "checkoutservice"
+        ports:
+          - "5050"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "shippingservice"
+        ports:
+          - "50051"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        selector: app == "adservice"
+        ports:
+          - "9555"
+  types:
+    - Ingress
+    - Egress
