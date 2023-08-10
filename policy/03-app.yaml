@@ -27,6 +27,12 @@ spec:
   order: 10
   ingress:
     - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        ports:
+          - '80'    
+    - action: Allow
       source:
         selector: all()
       destination:
