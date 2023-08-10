@@ -88,7 +88,7 @@ As the Stars application is comprised of microservices in three namespaces, we w
 Let's re-run the traffic test from the ```management-ui``` pod in ```management-ui``` namespace to the ```customer``` pod in the ```yaobank``` namespace
 
 ```bash
-    kubectl exec -it -n management-ui deploy/management-ui -- sh -c 'curl -m3 -sI http://customer.yaobank 2>/dev/null | grep -i http'
+kubectl exec -it -n management-ui deploy/management-ui -- sh -c 'curl -m3 -sI http://customer.yaobank 2>/dev/null | grep -i http'
 ```
 
 We should get ```command terminated with exit code 1``` as a result.
