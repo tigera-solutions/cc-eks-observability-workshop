@@ -22,6 +22,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: emailservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -65,6 +66,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: emailservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -78,6 +80,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: checkoutservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -132,6 +135,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: checkoutservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -145,6 +149,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recommendationservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -192,6 +197,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: recommendationservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -205,6 +211,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -273,6 +280,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  namespace: hipstershop
   annotations:
     projectcalico.org/l7-logging: "true"
 spec:
@@ -288,6 +296,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-external
+  namespace: hipstershop
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
     service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
@@ -306,6 +315,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: paymentservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -349,6 +359,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paymentservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -362,6 +373,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productcatalogservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -407,6 +419,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: productcatalogservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -420,6 +433,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cartservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -460,6 +474,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cartservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -473,6 +488,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: loadgenerator
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -522,6 +538,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: currencyservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -566,6 +583,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: currencyservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -579,6 +597,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shippingservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -622,6 +641,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shippingservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -635,6 +655,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-cart
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -675,6 +696,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-cart
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
@@ -688,6 +710,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adservice
+  namespace: hipstershop
 spec:
   selector:
     matchLabels:
@@ -733,6 +756,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: adservice
+  namespace: hipstershop
 spec:
   type: ClusterIP
   selector:
