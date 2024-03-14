@@ -79,32 +79,6 @@ As the Stars application is comprised of microservices in three namespaces, we w
 
     If we see any matches on traffic that our staged policies would be denying, let's try to understand what flows are being blocked, whether they are legitimate traffic that instead needs to be allowed, and make the required changes to the policy.
 
-## Making edits to the staged policies back in the policy recommender
-
-1. We see that there are denied flows in two of the policies that are legitimate flows that need to be allowed.
-
-   a. Firstly, we see that there is traffic being denied to the ```management-ui``` from the public internet (our browser trying to send traffic to the LB service). The reason for this is that the ingress ```Allow``` rule currently in place is allowing cluster-wide inbound traffic as per the ```global()``` selector but we need it to be wider than that to allow TCP traffic from 0.0.0.0/0 to the application. Let's make that change.
-
-   Click on the ```management-ui``` policy and click ```Edit Policy``` on the top-right to go into edit mode
-    ![edit_mgmt_ui](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/fc3993f8-c56a-45cd-939f-14387c1e956c)
-
-   Click on the edit icon to ```Edit Rule``` for the ingress policy rule
-    ![edit_rule_icon](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/cc46a984-ace4-4ac7-a7b1-16e0521e45f4)
-
-   X to remove and recreate the rule for all TCP traffic
-
-   b. Secondly, we are seeing that within the stars namespace-scoped policy, the frontend and backend pods aren't able to communicate with each other, and we can see that while egress is allowed within the stars namespace between these pods but there needs to be an ingress rule as well to be allowed. Let's go ahead and make that change.
-
-    Before:
-    ![unfull_stars](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/6a940102-5964-4887-a3ec-a49513b053ae)
-
-    After:
-    ![full_stars](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/69ad8519-5b73-4411-9eb6-9bc7dde24852)
-
-2. Checking back in the ElasticSearch log explorer, we see that we eventually hit no more matches for staged denied flows, which is what we want because no match means there is no undesired traffic hitting this rule. In production environments, make sure to do your due diligence that there is no denied traffic before enforcing your deny rules. Now we can go ahead and implement/Enforce our policy and all legitimate traffic should still flow.
-
-    ![zero_results_good](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/859f5ba0-d045-457d-bda7-74f4b5290da9)
-
 ## Testing traffic flow to ```yaobank``` namespace
 
 Let's re-run the traffic test from the ```management-ui``` pod in ```management-ui``` namespace to the ```customer``` pod in the ```yaobank``` namespace
