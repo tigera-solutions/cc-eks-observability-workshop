@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# -------------------------------------------------------
-# This manifest was adapted for Calico Cloud demostration
-# -------------------------------------------------------
+# ----------------------------------------------------------
+# This manifest was adapted for Calico Cloud demonstration
+# ----------------------------------------------------------
 
 # [START gke_release_kubernetes_manifests_microservices_demo]
 ---
@@ -34,26 +34,36 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/emailservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/emailservice:v0.9.0
         ports:
         - containerPort: 8080
         env:
         - name: PORT
           value: "8080"
-        - name: DISABLE_TRACING
-          value: "0"
         - name: DISABLE_PROFILER
-          value: "0"
+          value: "1"
         readinessProbe:
           periodSeconds: 5
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:8080"]
+          grpc:
+            port: 8080
         livenessProbe:
           periodSeconds: 5
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:8080"]
+          grpc:
+            port: 8080
         resources:
           requests:
             cpu: 100m
@@ -91,17 +101,29 @@ spec:
         app: checkoutservice
     spec:
       serviceAccountName: default
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
         - name: server
-          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.5.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.9.0
           ports:
           - containerPort: 5050
           readinessProbe:
-            exec:
-              command: ["/bin/grpc_health_probe", "-addr=:5050"]
+            grpc:
+              port: 5050
           livenessProbe:
-            exec:
-              command: ["/bin/grpc_health_probe", "-addr=:5050"]
+            grpc:
+              port: 5050
           env:
           - name: PORT
             value: "5050"
@@ -117,12 +139,6 @@ spec:
             value: "currencyservice:7000"
           - name: CART_SERVICE_ADDR
             value: "cartservice:7070"
-          - name: DISABLE_STATS
-            value: "0"
-          - name: DISABLE_TRACING
-            value: "0"
-          - name: DISABLE_PROFILER
-            value: "0"
           resources:
             requests:
               cpu: 100m
@@ -161,30 +177,38 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.9.0
         ports:
         - containerPort: 8080
         readinessProbe:
           periodSeconds: 5
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:8080"]
+          grpc:
+            port: 8080
         livenessProbe:
           periodSeconds: 5
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:8080"]
+          grpc:
+            port: 8080
         env:
         - name: PORT
           value: "8080"
         - name: PRODUCT_CATALOG_SERVICE_ADDR
           value: "productcatalogservice:3550"
-        - name: DISABLE_TRACING
-          value: "0"
         - name: DISABLE_PROFILER
-          value: "0"
-        - name: DISABLE_DEBUGGER
-          value: "0"
+          value: "1"
         resources:
           requests:
             cpu: 100m
@@ -220,11 +244,25 @@ spec:
     metadata:
       labels:
         app: frontend
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       serviceAccountName: default
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
         - name: server
-          image: gcr.io/google-samples/microservices-demo/frontend:v0.5.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+          image: gcr.io/google-samples/microservices-demo/frontend:v0.9.0
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -261,13 +299,18 @@ spec:
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
           # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
-          # # When not set, defaults to "local" unless running in GKE, otherwies auto-sets to gcp 
-          - name: ENV_PLATFORM 
+          # # When not set, defaults to "local" unless running in GKE, otherwies auto-sets to gcp
+          - name: ENV_PLATFORM
             value: "aws"
-          - name: DISABLE_TRACING
+          - name: ENABLE_PROFILER
             value: "0"
-          - name: DISABLE_PROFILER
-            value: "0"
+          # - name: CYMBAL_BRANDING
+          #   value: "true"
+          - name: FRONTEND_MESSAGE
+            value: "Welcome to the Calico EKS Observability workshop!"
+          # As part of an optional Google Cloud demo, you can run an optional microservice called the "packaging service".
+          # - name: PACKAGING_SERVICE_URL
+          #   value: "" # This value would look like "http://123.123.123"
           resources:
             requests:
               cpu: 100m
@@ -327,26 +370,34 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/paymentservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/paymentservice:v0.9.0
         ports:
         - containerPort: 50051
         env:
         - name: PORT
           value: "50051"
-        - name: DISABLE_TRACING
-          value: "0"
         - name: DISABLE_PROFILER
-          value: "0"
-        - name: DISABLE_DEBUGGER
-          value: "0"
+          value: "1"
         readinessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:50051"]
+          grpc:
+            port: 50051
         livenessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:50051"]
+          grpc:
+            port: 50051
         resources:
           requests:
             cpu: 100m
@@ -385,28 +436,34 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.9.0
         ports:
         - containerPort: 3550
         env:
         - name: PORT
           value: "3550"
-        - name: DISABLE_STATS
-          value: "0"
-        - name: DISABLE_TRACING
-          value: "0"
         - name: DISABLE_PROFILER
-          value: "0"
-        # - name: JAEGER_SERVICE_ADDR
-        #   value: "jaeger-collector:14268"
+          value: "1"
         readinessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:3550"]
+          grpc:
+            port: 3550
         livenessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:3550"]
+          grpc:
+            port: 3550
         resources:
           requests:
             cpu: 100m
@@ -445,9 +502,21 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/cartservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/cartservice:v0.9.0
         ports:
         - containerPort: 7070
         env:
@@ -462,13 +531,13 @@ spec:
             memory: 128Mi
         readinessProbe:
           initialDelaySeconds: 15
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
+          grpc:
+            port: 7070
         livenessProbe:
           initialDelaySeconds: 15
           periodSeconds: 10
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
+          grpc:
+            port: 7070
 ---
 apiVersion: v1
 kind: Service
@@ -498,10 +567,17 @@ spec:
     metadata:
       labels:
         app: loadgenerator
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       initContainers:
       - command:
         - /bin/sh
@@ -514,13 +590,27 @@ spec:
               exit 1
           fi
         name: frontend-check
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
         image: busybox:latest
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"
       containers:
       - name: main
-        image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.9.0
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"
@@ -550,27 +640,35 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/currencyservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/currencyservice:v0.9.0
         ports:
         - name: grpc
           containerPort: 7000
         env:
         - name: PORT
           value: "7000"
-        - name: DISABLE_TRACING
-          value: "0"
         - name: DISABLE_PROFILER
-          value: "0"
-        - name: DISABLE_DEBUGGER
-          value: "0"
+          value: "1"
         readinessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:7000"]
+          grpc:
+            port: 7000
         livenessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:7000"]
+          grpc:
+            port: 7000
         resources:
           requests:
             cpu: 100m
@@ -608,27 +706,35 @@ spec:
         app: shippingservice
     spec:
       serviceAccountName: default
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/shippingservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/shippingservice:v0.9.0
         ports:
         - containerPort: 50051
         env:
         - name: PORT
           value: "50051"
-        - name: DISABLE_STATS
-          value: "0"
-        - name: DISABLE_TRACING
-          value: "0"
         - name: DISABLE_PROFILER
-          value: "0"
+          value: "1"
         readinessProbe:
           periodSeconds: 5
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:50051"]
+          grpc:
+            port: 50051
         livenessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:50051"]
+          grpc:
+            port: 50051
         resources:
           requests:
             cpu: 100m
@@ -665,8 +771,20 @@ spec:
       labels:
         app: redis-cart
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: redis
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
         image: redis:alpine
         ports:
         - containerPort: 6379
@@ -702,7 +820,7 @@ spec:
   selector:
     app: redis-cart
   ports:
-  - name: tls-redis
+  - name: tcp-redis
     port: 6379
     targetPort: 6379
 ---
@@ -722,18 +840,26 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/adservice:v0.5.1
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: gcr.io/google-samples/microservices-demo/adservice:v0.9.0
         ports:
         - containerPort: 9555
         env:
         - name: PORT
           value: "9555"
-        - name: DISABLE_STATS
-          value: "0"
-        - name: DISABLE_TRACING
-          value: "0"
         resources:
           requests:
             cpu: 200m
@@ -744,13 +870,13 @@ spec:
         readinessProbe:
           initialDelaySeconds: 20
           periodSeconds: 15
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:9555"]
+          grpc:
+            port: 9555
         livenessProbe:
           initialDelaySeconds: 20
           periodSeconds: 15
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:9555"]
+          grpc:
+            port: 9555
 ---
 apiVersion: v1
 kind: Service
