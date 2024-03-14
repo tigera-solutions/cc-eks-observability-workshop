@@ -117,10 +117,11 @@ spec:
   ingress:
     - action: Allow
       protocol: TCP
-      source: {}
+      source:
+        selector: app == "loadgenerator"
       destination:
         ports:
-          - "8080"
+          - '8080'
   egress:
     - action: Allow
       protocol: TCP
@@ -171,6 +172,12 @@ spec:
         selector: app == "adservice"
         ports:
           - "9555"
+    - action: Allow
+      protocol: TCP
+      source: {}
+      destination:
+        ports:
+          - '80'
   types:
     - Ingress
     - Egress

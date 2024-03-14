@@ -44,12 +44,18 @@ spec:
   selector: all()
   namespaceSelector: ''
   serviceAccountSelector: ''
+  ingress:
+    - action: Deny
+      source:
+        selector: feed == "otx-ipthreatfeed"
+      destination: {}
   egress:
     - action: Deny
       source: {}
       destination:
         selector: feed == "otx-ipthreatfeed"
   types:
+    - Ingress
     - Egress
 ---
 apiVersion: projectcalico.org/v3
