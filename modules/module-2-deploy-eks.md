@@ -23,7 +23,7 @@ echo "# Start Lab Params" > ~/labVars.env
 echo export CLUSTERNAME=$CLUSTERNAME >> ~/labVars.env
 echo export REGION=$REGION >> ~/labVars.env
 #
-eksctl create cluster --name $CLUSTERNAME --version 1.26  --region $REGION --node-type m5.xlarge
+eksctl create cluster --name $CLUSTERNAME --version 1.27  --region $REGION --node-type m5.xlarge
 ```
 
 - View EKS cluster.
@@ -47,7 +47,7 @@ eksctl create cluster --name $CLUSTERNAME --version 1.26  --region $REGION --nod
 
 ---
 
-[:arrow_right: Module 3 - Connect the cluster to Calico Cloud](module-3-connect-calicocloud.md) <br>
+[:arrow_right: Module 3 - Connect the cluster to Calico Cloud](module-3-connect-calicocloud.md)  
 
 [:arrow_left: Module 1 - Getting Started](module-1-getting-started.md)
 
