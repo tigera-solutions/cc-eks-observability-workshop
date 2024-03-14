@@ -23,7 +23,7 @@ The estimated time to complete this workshop is 60-90 minutes.
 ## Modules
 
 This workshop is organized in sequential modules. One module will build up on top of the previous module, so please, follow the order as proposed below.
- 
+
 Module 1 - [Getting Started](modules/module-1-getting-started.md)  
 Module 2 - [Deploy an AWS EKS cluster](modules/module-2-deploy-eks.md)  
 Module 3 - [Connect the AWS EKS cluster to Calico Cloud](modules/module-3-connect-calicocloud.md)  
@@ -33,7 +33,7 @@ Module 6 - [Zero-trust security for pod traffic](modules/module-6-zero-trust-sec
 Module 7 - [Use Observability to Troubleshoot Connectivity Issues](modules/module-7-troubleshooting.md)</br>
 Module 8 - [Clean up](/modules/module-8-clean-up.md)  
 
---- 
+---
 
 ### Useful links
 
@@ -42,7 +42,7 @@ Module 8 - [Clean up](/modules/module-8-clean-up.md)
 - [O’REILLY EBOOK: Kubernetes security and observability](https://www.tigera.io/lp/kubernetes-security-and-observability-ebook)
 - [Calico Users - Slack](https://slack.projectcalico.org/)
 
-**Follow us on social media**
+### Follow us on social media
 
 - [LinkedIn](https://www.linkedin.com/company/tigera/)
 - [Twitter](https://twitter.com/tigeraio)

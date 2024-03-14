@@ -105,7 +105,7 @@ Services and port list:
 
    ![order_success](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/9f04035e-1cde-4d6e-99ae-3ad700893592)
 
-[:arrow_right: Module 8 - Cleanup](module-8-cleanup.md)  
+[:arrow_right: Module 8 - Cleanup](module-8-clean-up.md)  
 
 [:arrow_left: Module 6 - Zero-trust security for pod traffic](module-6-zero-trust-security.md)
 

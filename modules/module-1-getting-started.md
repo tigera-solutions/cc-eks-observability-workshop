@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-## Set up and configure your environment to work with AWS resources.
+## Set up and configure your environment to work with AWS resources
 
 >At the instructor-led workshop this module can be skipped as a workspace environment will be provided.
 
@@ -14,7 +14,6 @@
    ![Screen Shot 2023-07-20 at 12 47 46 PM](https://github.com/tigera-solutions/cc-eks-shift-left/assets/117195889/18b01a46-2cd3-4c31-b426-86d29b554679)
 4. Click on AWS Console Login to get your access and secret keys and setup your AWS credentials, along with default region as us-east-2 in your Cloud9 console or local terminal of choice
    ![Screen Shot 2023-07-20 at 12 48 34 PM](https://github.com/tigera-solutions/cc-eks-shift-left/assets/117195889/bdeaada6-defb-4b14-afbf-5f2e19a73d8d)
-
 
 ## (Optional) Choose between local environment and Cloud9 instance
 
@@ -40,7 +39,7 @@ The simplest ways to configure your workspace environment is to either use your 
      sudo ./aws/install
      . ~/.bashrc
      aws --version
-     ``` 
+     ```
 
    - eksctl
 
@@ -168,6 +167,6 @@ The simplest ways to configure your workspace environment is to either use your 
 
  ---
 
-[:arrow_right: Module 2 - Deploy an EKS cluster](module-2-deploy-eks.md) <br>
+[:arrow_right: Module 2 - Deploy an EKS cluster](module-2-deploy-eks.md)  
 
 [:leftwards_arrow_with_hook: Back to Main](../README.md)

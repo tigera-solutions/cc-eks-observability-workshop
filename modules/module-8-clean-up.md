@@ -4,8 +4,8 @@
 
    ```bash
    kubectl delete -f manifests/01-stars.yaml
-   kubectl delete -f pre/02-yaobank.yaml
-   kubectl delete ns hipstershop
+   kubectl delete -f manifests/02-yaobank.yaml
+   kubectl delete ns manifests/03-hipstershop.yaml
    ```
 
 2. Delete EKS cluster.
@@ -15,7 +15,7 @@
    eksctl delete cluster --name $CLUSTERNAME --region $REGION
    ```
 
-3. Delete Cloud9 instance.
+3. Delete Cloud9 instance (if used)
 
    Navigate to `AWS Console` > `Services` > `Cloud9` and remove your workspace environment, e.g. `tigera-workspace`.
 
@@ -36,6 +36,6 @@
 
 ---
 
-[:leftwards_arrow_with_hook: Back to Main](../README.md)  <br>
+[:leftwards_arrow_with_hook: Back to Main](../README.md)  
 
 [:arrow_left: Module 7 - Use Observability to Troubleshoot Connectivity Issues](module-7-troubleshooting.md)
