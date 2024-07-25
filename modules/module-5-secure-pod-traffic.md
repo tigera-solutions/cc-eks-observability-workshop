@@ -17,17 +17,20 @@ As the Stars application is comprised of microservices in three namespaces, we w
    You can check that ```policy-recommendation``` shows ```True``` under the ```AVAILABLE``` column when you run ```kubectl get tigerastatus```
 
    ```bash
-   NAME                            AVAILABLE   PROGRESSING   DEGRADED   SINCE
-    apiserver                       True        False         False      123m
-    calico                          True        False         False      125m
-    cloud-core                      True        False         False      125m
-    compliance                      True        False         False      123m
-    image-assurance                 True        False         False      123m
-    intrusion-detection             True        False         False      123m
-    log-collector                   True        False         False      123m
-    management-cluster-connection   True        False         False      123m
-    monitor                         True        False         False      124m
-    policy-recommendation           True        False         False      123m
+    NAME                            AVAILABLE   PROGRESSING   DEGRADED   SINCE
+    apiserver                       True        False         False      29m
+    applicationlayer                True        False         False      10m
+    calico                          True        False         False      27m
+    cloud-core                      True        False         False      29m
+    compliance                      True        False         False      28m
+    image-assurance                 True        False         False      28m
+    intrusion-detection             True        False         False      28m
+    ippools                         True        False         False      31m
+    log-collector                   True        False         False      27m
+    management-cluster-connection   True        False         False      28m
+    monitor                         True        False         False      29m
+    policy-recommendation           True        False         False      28m
+    tiers                           True        False         False      28m
     ```
 
 3. In the Calico Cloud GUI, click on ```Global Settings``` on the top right and make the ```Stabilization Period``` and ```Processing Interval``` a bit more aggressive to have the policy recommendations show up more quickly.
@@ -44,11 +47,17 @@ As the Stars application is comprised of microservices in three namespaces, we w
 
 5. Navigating to the policy board should show the staged policies are in their own tier called ```namespace-isolation``` and we are ready review them by clicking on them. Staged policies are a preview mode where you can see the impact of the policy before you decide to enforce it.
 
-![show_board](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/02ec1c1d-3101-4e19-8318-b5b2ed79889a)
+    ![show_board](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/02ec1c1d-3101-4e19-8318-b5b2ed79889a)
+
+6. Apply the default-deny ```Staged``` policy to understand what traffic it would deny:
+
+    ```bash
+    kubectl apply -f policy/01-default-deny.yaml
+    ```
 
 ## Visualize denied staged traffic via Elasticsearch Log Explorer
 
-1. To explore the flows that would be denied by the staged policies, we can explore the logs better in the ElasticSearch instance that collects all the flow logs. This can be accessed by clicking on ```Logs``` in the left menu, this takes us to the Kibana dashboard in a new browser tab.
+1. To explore the flows that would be denied by the staged policies and the staged default-deny policy, we can explore the logs better in the ElasticSearch instance that collects all the flow logs. This can be accessed by clicking on ```Logs``` in the left menu, this takes us to the Kibana dashboard in a new browser tab.
 
     ![Logs_menu](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/8c20ddf6-f0bc-4325-a81d-71af8370d69e)
 
@@ -77,7 +86,7 @@ As the Stars application is comprised of microservices in three namespaces, we w
 
     ```policies:{ all_policies: *default.staged**deny*  }```
 
-    If we see any matches on traffic that our staged policies would be denying, let's try to understand what flows are being blocked, whether they are legitimate traffic that instead needs to be allowed, and make the required changes to the policy.
+    If we see any matches on traffic that our staged policies would be denying, let's try to understand what flows are being blocked, whether they are legitimate traffic that instead needs to be allowed, and make the required changes to the policies.
 
 ## Testing traffic flow to ```yaobank``` namespace
 
@@ -89,9 +98,10 @@ kubectl exec -it -n management-ui deploy/management-ui -- sh -c 'curl -m3 -sI ht
 
 We should get ```command terminated with exit code 1``` as a result.
 
-Since we have configured the namespace-scoped policies for the Stars app to only allow the traffic we want, the implicit deny has blocked traffic to ```yaobank``` thus giving us the microsegmentation we need, and we were able to utilize the observability features of Calico Cloud to ensure that our legitimate traffic is still allowed.
+Why didn't the request succeed this time?
 
-The service graph should show no denied flows and accessing the application through the browser should still work fine after implementing the policy.
+> [!NOTE]
+> Try looking at the Service Graph, Policy Board or Kibana to find the answer
 
 Finally, download the policies as YAMLs so that it can be used in the next module.
 
