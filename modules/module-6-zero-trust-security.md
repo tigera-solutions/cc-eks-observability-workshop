@@ -38,28 +38,22 @@ The default tier is used to implement global default deny policy.
     kubectl apply -f policy/00-tiers.yaml
     ```
 
-2. Apply the ```default-deny``` policy as a ```Staged``` policy first in the ```default``` tier for all the necessary namespaces:
-
-    ```bash
-    kubectl apply -f policy/01-default-deny.yaml
-    ```
-
-3. Apply the ```security``` tier policies
+2. Apply the ```security``` tier policies
 
     ```bash
     kubectl apply -f policy/02-security.yaml
     ```
 
-4. Apply the ```app``` tier policies
+3. Apply the ```app``` tier policies
 
    ```bash
    kubectl apply -f policy/03-app.yaml
    kubectl apply -f policy/04-hipstershop.yaml
    ```
 
-5. Finally enforce the default deny policy from the Calico Cloud GUI.
+4. Finally enforce the default deny policy from the Calico Cloud GUI.
 
-6. Examine the results in the service graph and run traffic tests to verify.  
+5. Examine the results in the service graph and run traffic tests to verify.  
 
 [:arrow_right: Module 7 - Use Observability to Troubleshoot Connectivity Issues](module-7-troubleshooting.md)  
 
