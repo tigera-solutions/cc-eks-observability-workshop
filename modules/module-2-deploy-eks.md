@@ -1,6 +1,7 @@
 # Module 2 - Deploy an EKS Cluster
 
-> **Note**: During this workshop, we'll set up some environment variables. If you're terminal session restarts, you may need to reload these variables. You can use that via the following command: <p>
+> **Note**: During this workshop, we'll set up some environment variables. If you're terminal session restarts, you may need to reload these variables. You can use that via the following command:
+
 ```bash
 source ~/labVars.env
 ```
